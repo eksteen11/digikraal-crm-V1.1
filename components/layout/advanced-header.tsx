@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
-import { Search, Command, Bell, User, Settings, LogOut, Building2, Zap, Globe, Moon, Sun } from "lucide-react"
+import { Search, Command, Bell, User, Settings, LogOut, Building2, Zap, Globe, Moon, Sun, Menu } from "lucide-react"
 import { usePathname } from "next/navigation"
 import Link from "next/link"
 import { PremiumLogo as Logo } from "@/components/ui/premium-logo"
@@ -67,22 +67,22 @@ export function AdvancedHeader() {
           : "bg-background/80 border-b border-border"
       }`}
     >
-      <div className="flex h-16 items-center justify-between px-6">
+      <div className="flex h-16 items-center justify-between px-4 sm:px-6">
         {/* Left side - Logo and Navigation */}
-        <div className="flex items-center space-x-8">
+        <div className="flex items-center space-x-4 lg:space-x-8 min-w-0 flex-shrink-0">
           <Link href="/" className="group">
             <Logo size="md" variant="gradient" showText={true} className="group-hover:scale-105 transition-transform duration-300" />
           </Link>
 
           {/* Advanced Navigation Menu */}
-          <nav className="hidden lg:flex items-center space-x-1">
+          <nav className="hidden xl:flex items-center space-x-1">
             {navigationItems.map((item) => {
               const isActive = pathname === item.href
               return (
                 <Link key={item.href} href={item.href}>
                   <Button
                     variant="ghost"
-                    className={`relative group px-4 py-2 rounded-xl transition-all duration-300 ${
+                    className={`relative group px-3 py-2 rounded-xl transition-all duration-300 ${
                       isActive
                         ? "bg-primary/10 text-primary shadow-soft"
                         : "hover:bg-muted/50 text-muted-foreground hover:text-foreground"
@@ -103,30 +103,74 @@ export function AdvancedHeader() {
               )
             })}
           </nav>
+
+          {/* Mobile Navigation Menu */}
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="xl:hidden glass border border-glass-border hover:bg-muted/50 transition-all duration-300"
+              >
+                <Menu className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="w-56 glass border-glass-border shadow-large" align="start">
+              <DropdownMenuLabel className="font-sans font-semibold">Navigation</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              {navigationItems.map((item) => {
+                const isActive = pathname === item.href
+                return (
+                  <DropdownMenuItem key={item.href} className="hover:bg-muted/50 transition-colors" asChild>
+                    <Link href={item.href} className="flex items-center justify-between w-full">
+                      <div className="flex items-center">
+                        <item.icon className="w-4 h-4 mr-3" />
+                        <span className={isActive ? "text-primary font-medium" : ""}>{item.label}</span>
+                      </div>
+                      {item.badge && (
+                        <Badge className="h-5 px-1.5 text-xs gradient-primary text-white border-0">
+                          {item.badge}
+                        </Badge>
+                      )}
+                    </Link>
+                  </DropdownMenuItem>
+                )
+              })}
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
 
         {/* Center - Breadcrumb with 3D effect */}
-        <div className="hidden md:flex items-center">
+        <div className="hidden lg:flex items-center flex-1 justify-center min-w-0">
           <div className="glass rounded-xl px-4 py-2 border border-glass-border">
-            <h1 className="font-sans font-semibold text-lg text-foreground">{currentPage}</h1>
+            <h1 className="font-sans font-semibold text-lg text-foreground truncate">{currentPage}</h1>
           </div>
         </div>
 
         {/* Right side - Advanced Controls */}
-        <div className="flex items-center space-x-3">
-          {/* Enhanced Search */}
-          <div className="relative group">
+        <div className="flex items-center space-x-2 lg:space-x-3 min-w-0 flex-shrink-0">
+          {/* Enhanced Search - Responsive */}
+          <div className="relative group hidden sm:block">
             <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground group-hover:text-primary transition-colors" />
             <Input
               placeholder="Search everything..."
-              className="w-80 pl-10 pr-16 glass border-glass-border focus:border-primary/50 focus:ring-2 focus:ring-primary/20 transition-all duration-300"
+              className="w-48 lg:w-64 xl:w-80 pl-10 pr-16 glass border-glass-border focus:border-primary/50 focus:ring-2 focus:ring-primary/20 transition-all duration-300"
             />
             <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center space-x-1">
-              <kbd className="inline-flex h-5 select-none items-center gap-1 rounded bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground">
+              <kbd className="hidden lg:inline-flex h-5 select-none items-center gap-1 rounded bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground">
                 <Command className="h-3 w-3" />K
               </kbd>
             </div>
           </div>
+
+          {/* Mobile Search Button */}
+          <Button
+            variant="ghost"
+            size="icon"
+            className="sm:hidden glass border border-glass-border hover:bg-muted/50 transition-all duration-300"
+          >
+            <Search className="h-4 w-4" />
+          </Button>
 
           {/* Theme Toggle */}
           <Button
