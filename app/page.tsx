@@ -51,12 +51,12 @@ export default function LandingPage() {
               <Link href="/about" className="text-muted-foreground hover:text-foreground transition-colors">
                 About
               </Link>
-              <Link href="/dashboard">
+              <Link href="/auth/login">
                 <Button variant="outline" size="sm">
                   Sign In
                 </Button>
               </Link>
-              <Link href="/dashboard">
+              <Link href="/auth/signup">
                 <Button className="gradient-primary text-white shadow-medium">Get Started</Button>
               </Link>
             </div>
@@ -87,7 +87,7 @@ export default function LandingPage() {
               </div>
 
               <div className="flex flex-col sm:flex-row gap-4">
-                <Link href="/dashboard">
+                <Link href="/auth/signup">
                   <Button
                     size="lg"
                     className="gradient-primary text-white shadow-medium hover:shadow-large transition-all duration-300 group"
@@ -262,7 +262,7 @@ export default function LandingPage() {
               </div>
 
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Link href="/dashboard">
+                <Link href="/auth/signup">
                   <Button
                     size="lg"
                     className="gradient-primary text-white shadow-medium hover:shadow-large transition-all duration-300"
