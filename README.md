@@ -2,6 +2,11 @@
 
 **Revolutionary Livestock Trading CRM Platform**
 
+## Latest Updates
+- Fixed header responsiveness issues
+- Improved navigation layout  
+- Enhanced mobile experience
+
 A modern, AI-powered Customer Relationship Management system designed specifically for livestock trading professionals. Built with Next.js 15, TypeScript, and premium 2025 design aesthetics.
 
 ![Digikraal CRM](https://img.shields.io/badge/Next.js-15.2.4-black?style=for-the-badge&logo=next.js)
