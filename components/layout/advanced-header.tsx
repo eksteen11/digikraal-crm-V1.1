@@ -69,29 +69,29 @@ export function AdvancedHeader() {
     >
       <div className="flex h-16 items-center justify-between px-4 sm:px-6">
         {/* Left side - Logo and Navigation */}
-        <div className="flex items-center space-x-4 lg:space-x-8 min-w-0 flex-shrink-0">
+        <div className="flex items-center space-x-2 lg:space-x-4 min-w-0 flex-shrink-0">
           <Link href="/" className="group">
             <Logo size="md" variant="gradient" showText={true} className="group-hover:scale-105 transition-transform duration-300" />
           </Link>
 
           {/* Advanced Navigation Menu */}
-          <nav className="hidden xl:flex items-center space-x-1">
+          <nav className="hidden xl:flex items-center space-x-0.5">
             {navigationItems.map((item) => {
               const isActive = pathname === item.href
               return (
                 <Link key={item.href} href={item.href}>
                   <Button
                     variant="ghost"
-                    className={`relative group px-3 py-2 rounded-xl transition-all duration-300 ${
+                    className={`relative group px-2 py-2 rounded-xl transition-all duration-300 ${
                       isActive
                         ? "bg-primary/10 text-primary shadow-soft"
                         : "hover:bg-muted/50 text-muted-foreground hover:text-foreground"
                     }`}
                   >
-                    <item.icon className="w-4 h-4 mr-2" />
-                    {item.label}
+                    <item.icon className="w-4 h-4 mr-1.5" />
+                    <span className="text-sm">{item.label}</span>
                     {item.badge && (
-                      <Badge className="ml-2 h-5 px-1.5 text-xs gradient-primary text-white border-0">
+                      <Badge className="ml-1.5 h-5 px-1.5 text-xs gradient-primary text-white border-0">
                         {item.badge}
                       </Badge>
                     )}
@@ -154,7 +154,7 @@ export function AdvancedHeader() {
             <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground group-hover:text-primary transition-colors" />
             <Input
               placeholder="Search everything..."
-              className="w-48 lg:w-64 xl:w-80 pl-10 pr-16 glass border-glass-border focus:border-primary/50 focus:ring-2 focus:ring-primary/20 transition-all duration-300"
+              className="w-40 lg:w-48 xl:w-64 pl-10 pr-12 glass border-glass-border focus:border-primary/50 focus:ring-2 focus:ring-primary/20 transition-all duration-300"
             />
             <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center space-x-1">
               <kbd className="hidden lg:inline-flex h-5 select-none items-center gap-1 rounded bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground">
