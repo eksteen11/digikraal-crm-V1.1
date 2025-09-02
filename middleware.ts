@@ -35,7 +35,7 @@ export async function middleware(request: NextRequest) {
   } = await supabase.auth.getUser()
 
   // Protected routes
-  const protectedRoutes = ['/dashboard', '/inbox', '/pipeline', '/listings', '/buyers', '/deals', '/campaigns', '/segments', '/reports', '/templates', '/automations', '/integrations', '/settings', '/transport', '/finance']
+  const protectedRoutes = ['/dashboard', '/inbox', '/pipeline', '/listings', '/buyers', '/deals', '/campaigns', '/segments', '/reports', '/templates', '/automations', '/integrations', '/settings', '/transport', '/finance', '/profile']
   
   // Auth routes (redirect if already logged in)
   const authRoutes = ['/auth/login', '/auth/signup']

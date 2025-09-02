@@ -8,10 +8,12 @@ import { ArrowRight, Play, TrendingUp, Users, Building2, Zap, Shield, Globe, Che
 import Link from "next/link"
 import { PremiumFooter } from "@/components/layout/premium-footer"
 import { PremiumLogo as Logo } from "@/components/ui/premium-logo"
+import { useAuth } from "@/lib/auth-context"
 
 export default function LandingPage() {
   const [isVisible, setIsVisible] = useState(false)
   const [activeFeature, setActiveFeature] = useState(0)
+  const { user } = useAuth()
 
   useEffect(() => {
     setIsVisible(true)
@@ -51,14 +53,24 @@ export default function LandingPage() {
               <Link href="/about" className="text-muted-foreground hover:text-foreground transition-colors">
                 About
               </Link>
-              <Link href="/auth/login">
-                <Button variant="outline" size="sm">
-                  Sign In
-                </Button>
-              </Link>
-              <Link href="/auth/signup">
-                <Button className="gradient-primary text-white shadow-medium">Get Started</Button>
-              </Link>
+              {user ? (
+                <Link href="/dashboard">
+                  <Button className="gradient-primary text-white shadow-medium">
+                    Go to Dashboard
+                  </Button>
+                </Link>
+              ) : (
+                <>
+                  <Link href="/auth/login">
+                    <Button variant="outline" size="sm">
+                      Sign In
+                    </Button>
+                  </Link>
+                  <Link href="/auth/signup">
+                    <Button className="gradient-primary text-white shadow-medium">Get Started</Button>
+                  </Link>
+                </>
+              )}
             </div>
           </div>
         </div>
@@ -87,15 +99,27 @@ export default function LandingPage() {
               </div>
 
               <div className="flex flex-col sm:flex-row gap-4">
-                <Link href="/auth/signup">
-                  <Button
-                    size="lg"
-                    className="gradient-primary text-white shadow-medium hover:shadow-large transition-all duration-300 group"
-                  >
-                    Start Free Trial
-                    <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                  </Button>
-                </Link>
+                {user ? (
+                  <Link href="/dashboard">
+                    <Button
+                      size="lg"
+                      className="gradient-primary text-white shadow-medium hover:shadow-large transition-all duration-300 group"
+                    >
+                      Go to Dashboard
+                      <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                    </Button>
+                  </Link>
+                ) : (
+                  <Link href="/auth/signup">
+                    <Button
+                      size="lg"
+                      className="gradient-primary text-white shadow-medium hover:shadow-large transition-all duration-300 group"
+                    >
+                      Start Free Trial
+                      <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                    </Button>
+                  </Link>
+                )}
                 <Button size="lg" variant="outline" className="glass border-glass-border hover:bg-glass bg-transparent">
                   <Play className="mr-2 w-4 h-4" />
                   Watch Demo

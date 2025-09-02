@@ -17,6 +17,7 @@ import { Search, Command, Bell, User, Settings, LogOut, Building2, Zap, Globe, M
 import { usePathname } from "next/navigation"
 import Link from "next/link"
 import { PremiumLogo as Logo } from "@/components/ui/premium-logo"
+import { useAuth } from "@/lib/auth-context"
 
 const breadcrumbMap: Record<string, string> = {
   "/dashboard": "Dashboard",
@@ -48,6 +49,7 @@ export function AdvancedHeader() {
   const currentPage = breadcrumbMap[pathname] || "Dashboard"
   const [isScrolled, setIsScrolled] = useState(false)
   const [isDark, setIsDark] = useState(false)
+  const { user, signOut, loading } = useAuth()
 
   useEffect(() => {
     const handleScroll = () => {
@@ -170,52 +172,82 @@ export function AdvancedHeader() {
           </DropdownMenu>
 
           {/* Enhanced User Menu */}
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button
-                variant="ghost"
-                className="relative h-10 w-10 rounded-full glass border border-glass-border hover:shadow-medium transition-all duration-300"
-              >
-                <Avatar className="h-9 w-9">
-                  <AvatarImage src="/diverse-user-avatars.png" alt="User" />
-                  <AvatarFallback className="gradient-primary text-white font-semibold">JD</AvatarFallback>
-                </Avatar>
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-64 glass border-glass-border shadow-large" align="end" forceMount>
-              <DropdownMenuLabel className="font-normal p-4">
-                <div className="flex items-center space-x-3">
-                  <Avatar className="h-12 w-12">
-                    <AvatarImage src="/diverse-user-avatars.png" alt="User" />
-                    <AvatarFallback className="gradient-primary text-white font-semibold">JD</AvatarFallback>
+          {loading ? (
+            <div className="h-10 w-10 rounded-full glass border border-glass-border animate-pulse bg-muted"></div>
+          ) : user ? (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="ghost"
+                  className="relative h-10 w-10 rounded-full glass border border-glass-border hover:shadow-medium transition-all duration-300"
+                >
+                  <Avatar className="h-9 w-9">
+                    <AvatarImage src={user.user_metadata?.avatar_url} alt={user.email} />
+                    <AvatarFallback className="gradient-primary text-white font-semibold">
+                      {user.email?.charAt(0).toUpperCase() || 'U'}
+                    </AvatarFallback>
                   </Avatar>
-                  <div className="space-y-1">
-                    <p className="font-sans font-semibold text-sm">John Doe</p>
-                    <p className="text-xs text-muted-foreground">john@digikraal.com</p>
-                    <Badge className="text-xs gradient-primary text-white border-0">Premium</Badge>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-64 glass border-glass-border shadow-large" align="end" forceMount>
+                <DropdownMenuLabel className="font-normal p-4">
+                  <div className="flex items-center space-x-3">
+                    <Avatar className="h-12 w-12">
+                      <AvatarImage src={user.user_metadata?.avatar_url} alt={user.email} />
+                      <AvatarFallback className="gradient-primary text-white font-semibold">
+                        {user.email?.charAt(0).toUpperCase() || 'U'}
+                      </AvatarFallback>
+                    </Avatar>
+                    <div className="space-y-1">
+                      <p className="font-sans font-semibold text-sm">
+                        {user.user_metadata?.full_name || user.email?.split('@')[0] || 'User'}
+                      </p>
+                      <p className="text-xs text-muted-foreground">{user.email}</p>
+                      <Badge className="text-xs gradient-primary text-white border-0">
+                        {user.user_metadata?.role || 'User'}
+                      </Badge>
+                    </div>
                   </div>
-                </div>
-              </DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem className="hover:bg-muted/50 transition-colors">
-                <User className="mr-3 h-4 w-4" />
-                <span>Profile Settings</span>
-              </DropdownMenuItem>
-              <DropdownMenuItem className="hover:bg-muted/50 transition-colors">
-                <Settings className="mr-3 h-4 w-4" />
-                <span>Preferences</span>
-              </DropdownMenuItem>
-              <DropdownMenuItem className="hover:bg-muted/50 transition-colors">
-                <Zap className="mr-3 h-4 w-4" />
-                <span>Upgrade Plan</span>
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem className="hover:bg-destructive/10 text-destructive transition-colors">
-                <LogOut className="mr-3 h-4 w-4" />
-                <span>Sign Out</span>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+                </DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem className="hover:bg-muted/50 transition-colors" asChild>
+                  <Link href="/profile">
+                    <User className="mr-3 h-4 w-4" />
+                    <span>Profile Settings</span>
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem className="hover:bg-muted/50 transition-colors">
+                  <Settings className="mr-3 h-4 w-4" />
+                  <span>Preferences</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem className="hover:bg-muted/50 transition-colors">
+                  <Zap className="mr-3 h-4 w-4" />
+                  <span>Upgrade Plan</span>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem 
+                  className="hover:bg-destructive/10 text-destructive transition-colors"
+                  onClick={signOut}
+                >
+                  <LogOut className="mr-3 h-4 w-4" />
+                  <span>Sign Out</span>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          ) : (
+            <div className="flex items-center space-x-2">
+              <Link href="/auth/login">
+                <Button variant="outline" size="sm" className="glass border-glass-border">
+                  Sign In
+                </Button>
+              </Link>
+              <Link href="/auth/signup">
+                <Button size="sm" className="gradient-primary text-white shadow-medium">
+                  Get Started
+                </Button>
+              </Link>
+            </div>
+          )}
         </div>
       </div>
     </header>
