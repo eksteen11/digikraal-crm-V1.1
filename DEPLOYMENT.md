@@ -70,3 +70,9 @@ After deployment:
 2. **Fill in your Supabase credentials**
 3. **Run `npm run dev`**
 4. **Test locally before deploying**
+
+## Force Deployment
+
+If Vercel is not picking up the latest changes, try:
+1. **Redeploy from Vercel dashboard**
+2. **Or make a small change and push to trigger new deployment**
